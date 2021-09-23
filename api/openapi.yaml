@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title: fcd-endpoint-client
+  version: 1.0.0
+  description: FCD-endpoint-client
+  contact:
+    name: Be-Mobile API Support
+    email: api-support@be-mobile.com
+  x-audience: external-partner
+  x-business-domain: data
+servers:
+  - url: 'wss://{provider-id}.bemobile.biz'
+paths:
+  /ws:
+    get:
+      summary: websocket to push fcd data to
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+      operationId: get-ws
+      description: used to push fcd-data to endpoint
+      x-internal: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/fcd'
+        description: ''
+      parameters: []
+    parameters: []
+components:
+  schemas:
+    fcd:
+      description: FCD-data
+      type: object
+      properties:
+        vehicleId:
+          type: string
+          minLength: 1
+        vehicleType:
+          type: number
+        timestamp:
+          type: number
+        lon:
+          type: number
+        lat:
+          type: number
+        heading:
+          type: number
+        speed:
+          type: number
+        hdop:
+          type: number
+        metadata:
+          type: object
+          properties:
+            routeNumber:
+              type: number
+          required:
+            - routeNumber
+      required:
+        - vehicleId
+        - vehicleType
+        - timestamp
+        - lon
+        - lat
+        - heading
+        - speed
+        - hdop
+        - metadata
+      x-examples:
+        example:
+          vehicleId: ASCII-Vehicle-ID
+          vehicleType: 1
+          timestamp: 1479673407
+          lon: 51.019426
+          lat: 3.768572
+          heading: 270
+          speed: 120.5
+          hdop: 5
+          metadata:
+            routeNumber: 62
+          value:
+            vehicleId: ASCII-Vehicle-ID
+            vehicleType: 1
+            timestamp: 1479673407
+            lon: 51.019426
+            lat: 3.768572
+            heading: 270
+            speed: 120.5
+            hdop: 5
+            metadata:
+              routeNumber: 62
+      title: ''
+  securitySchemes: {}
