@@ -32,13 +32,12 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*DefaultApi* | [**GetWs**](docs/DefaultApi.md#getws) | **Get** /ws | websocket to push fcd data to
+*DefaultApi* | [**GetWs**](docs/DefaultApi.md#getws) | **Get** /ws | Your GET endpoint
 
 
 ## Documentation For Models
 
- - [Fcd](docs/Fcd.md)
- - [FcdMetadata](docs/FcdMetadata.md)
+ - [GpsPosition](docs/GpsPosition.md)
 
 
 ## Documentation For Authorization

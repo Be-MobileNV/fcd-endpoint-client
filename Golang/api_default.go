@@ -28,15 +28,15 @@ type DefaultApiService service
 
 // GetWsOpts Optional parameters for the method 'GetWs'
 type GetWsOpts struct {
-    Fcd optional.Interface
+    GpsPosition optional.Interface
 }
 
 /*
-GetWs websocket to push fcd data to
-used to push fcd-data to endpoint
+GetWs Your GET endpoint
+used to push gps-positions to endpoint
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param optional nil or *GetWsOpts - Optional Parameters:
- * @param "Fcd" (optional.Interface of Fcd) - 
+ * @param "GpsPosition" (optional.Interface of GpsPosition) - 
 */
 func (a *DefaultApiService) GetWs(ctx _context.Context, localVarOptionals *GetWsOpts) (*_nethttp.Response, error) {
 	var (
@@ -72,12 +72,12 @@ func (a *DefaultApiService) GetWs(ctx _context.Context, localVarOptionals *GetWs
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Fcd.IsSet() {
-		localVarOptionalFcd, localVarOptionalFcdok := localVarOptionals.Fcd.Value().(Fcd)
-		if !localVarOptionalFcdok {
-			return nil, reportError("fcd should be Fcd")
+	if localVarOptionals != nil && localVarOptionals.GpsPosition.IsSet() {
+		localVarOptionalGpsPosition, localVarOptionalGpsPositionok := localVarOptionals.GpsPosition.Value().(GpsPosition)
+		if !localVarOptionalGpsPositionok {
+			return nil, reportError("gpsPosition should be GpsPosition")
 		}
-		localVarPostBody = &localVarOptionalFcd
+		localVarPostBody = &localVarOptionalGpsPosition
 	}
 
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)

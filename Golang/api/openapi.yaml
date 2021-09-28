@@ -9,18 +9,18 @@ info:
   x-audience: external-partner
   x-business-domain: data
 servers:
-- url: wss://{provider-id}.bemobile.biz
+- url: wss://provider-fcd.bemobile.biz
 paths:
   /ws:
     get:
-      description: used to push fcd-data to endpoint
+      description: used to push gps-positions to endpoint
       operationId: get-ws
       parameters: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/fcd'
+              $ref: '#/components/schemas/GPSPosition'
       responses:
         200:
           description: OK
@@ -28,34 +28,36 @@ paths:
           description: Bad Request
         500:
           description: Internal Server Error
-      summary: websocket to push fcd data to
+      summary: Your GET endpoint
       tags: []
       x-internal: false
 components:
   schemas:
-    fcd:
-      description: FCD-data
+    GPSPosition:
+      description: GPS Position
       properties:
         vehicleId:
-          minLength: 1
           type: string
         vehicleType:
-          type: number
+          type: integer
+        engineState:
+          type: integer
         timestamp:
-          type: number
+          type: integer
         lon:
           type: number
         lat:
           type: number
         heading:
           type: number
-        speed:
-          type: number
         hdop:
           type: number
+        speed:
+          type: number
         metadata:
-          $ref: '#/components/schemas/fcd_metadata'
+          type: object
       required:
+      - engineState
       - hdop
       - heading
       - lat
@@ -70,29 +72,13 @@ components:
         example:
           vehicleId: ASCII-Vehicle-ID
           vehicleType: 1
+          engineState: 0
           timestamp: 1479673407
           lon: 51.019426
           lat: 3.768572
           heading: 270
-          speed: 120.5
           hdop: 5
+          speed: 120.5
           metadata:
             routeNumber: 62
-          value:
-            vehicleId: ASCII-Vehicle-ID
-            vehicleType: 1
-            timestamp: 1479673407
-            lon: 51.019426
-            lat: 3.768572
-            heading: 270
-            speed: 120.5
-            hdop: 5
-            metadata:
-              routeNumber: 62
-    fcd_metadata:
-      properties:
-        routeNumber:
-          type: number
-      required:
-      - routeNumber
   securitySchemes: {}

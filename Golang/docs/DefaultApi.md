@@ -4,7 +4,7 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**GetWs**](DefaultApi.md#GetWs) | **Get** /ws | websocket to push fcd data to
+[**GetWs**](DefaultApi.md#GetWs) | **Get** /ws | Your GET endpoint
 
 
 
@@ -12,9 +12,9 @@ Method | HTTP request | Description
 
 > GetWs(ctx, optional)
 
-websocket to push fcd data to
+Your GET endpoint
 
-used to push fcd-data to endpoint
+used to push gps-positions to endpoint
 
 ### Required Parameters
 
@@ -31,7 +31,7 @@ Optional parameters are passed through a pointer to a GetWsOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fcd** | [**optional.Interface of Fcd**](Fcd.md)|  | 
+ **gpsPosition** | [**optional.Interface of GpsPosition**](GpsPosition.md)|  | 
 
 ### Return type
 

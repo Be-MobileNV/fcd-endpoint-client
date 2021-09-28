@@ -9,11 +9,11 @@ info:
   x-audience: external-partner
   x-business-domain: data
 servers:
-  - url: 'wss://{provider-id}.bemobile.biz'
+  - url: 'wss://provider-fcd.bemobile.biz'
 paths:
   /ws:
     get:
-      summary: websocket to push fcd data to
+      summary: Your GET endpoint
       tags: []
       responses:
         '200':
@@ -23,78 +23,65 @@ paths:
         '500':
           description: Internal Server Error
       operationId: get-ws
-      description: used to push fcd-data to endpoint
+      description: used to push gps-positions to endpoint
       x-internal: false
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/fcd'
+              $ref: '#/components/schemas/GPSPosition'
         description: ''
       parameters: []
     parameters: []
 components:
   schemas:
-    fcd:
-      description: FCD-data
+    GPSPosition:
+      description: GPS Position
       type: object
+      x-examples:
+        example:
+          vehicleId: ASCII-Vehicle-ID
+          vehicleType: 1
+          engineState: 0
+          timestamp: 1479673407
+          lon: 51.019426
+          lat: 3.768572
+          heading: 270
+          hdop: 5
+          speed: 120.5
+          metadata:
+            routeNumber: 62
+      title: ''
       properties:
         vehicleId:
           type: string
-          minLength: 1
         vehicleType:
-          type: number
+          type: integer
+        engineState:
+          type: integer
         timestamp:
-          type: number
+          type: integer
         lon:
           type: number
         lat:
           type: number
         heading:
           type: number
-        speed:
-          type: number
         hdop:
+          type: number
+        speed:
           type: number
         metadata:
           type: object
-          properties:
-            routeNumber:
-              type: number
-          required:
-            - routeNumber
       required:
         - vehicleId
         - vehicleType
+        - engineState
         - timestamp
         - lon
         - lat
         - heading
-        - speed
         - hdop
+        - speed
         - metadata
-      x-examples:
-        example:
-          vehicleId: ASCII-Vehicle-ID
-          vehicleType: 1
-          timestamp: 1479673407
-          lon: 51.019426
-          lat: 3.768572
-          heading: 270
-          speed: 120.5
-          hdop: 5
-          metadata:
-            routeNumber: 62
-          value:
-            vehicleId: ASCII-Vehicle-ID
-            vehicleType: 1
-            timestamp: 1479673407
-            lon: 51.019426
-            lat: 3.768572
-            heading: 270
-            speed: 120.5
-            hdop: 5
-            metadata:
-              routeNumber: 62
-      title: ''
   securitySchemes: {}
