@@ -1,4 +1,4 @@
-module bitbucket.org/be-mobile/fcd-endpoint-client
+module bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang
 
 go 1.16
 
