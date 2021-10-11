@@ -9,11 +9,14 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// characters to be used in the VehicleID
 const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789"
 
 var seededRand *rand.Rand = rand.New(
 	rand.NewSource(time.Now().UnixNano()))
 
+// load config, create websocketclient using that config and send 100 random gpspositions
+// to the endpoint specified.
 func main() {
 	cfg := cfg.LoadConfig()
 	logrus.Debugf("Config loaded: %s", cfg)
@@ -29,6 +32,7 @@ func main() {
 	}
 }
 
+// generate random GPS Position to push to endpoint
 func getGPSPosition() *cfg.GPSPosition {
 	ymin := 46.691265
 	ymax := 52.076458
@@ -48,6 +52,7 @@ func getGPSPosition() *cfg.GPSPosition {
 	return &pos
 }
 
+// generate random VehicleID
 func stringWithCharset() string {
 	b := make([]byte, 12)
 	for i := range b {
