@@ -47,7 +47,7 @@ func getGPSPosition() *cfg.GPSPosition {
 		Lat:         (rand.Float64() * (ymax - ymin)) + ymin,
 		Heading:     rand.Float32(),
 		Hdop:        rand.Float32(),
-		Speed:       rand.Float32(),
+		Speed:       rand.Float32() * 120,
 	}
 	return &pos
 }
