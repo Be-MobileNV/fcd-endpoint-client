@@ -54,6 +54,13 @@ func LoadConfig() *config.WebSocketConfiguration {
 		logrus.Fatalf("Invalid config: %+v", err)
 	}
 
+	lvl, err := logrus.ParseLevel(cfg.LogLevel)
+	if err != nil {
+		logrus.Fatalf("Invalid log level %s : %+v", cfg.LogLevel, err)
+	} else {
+		logrus.SetLevel(lvl)
+	}
+
 	return cfg
 }
 

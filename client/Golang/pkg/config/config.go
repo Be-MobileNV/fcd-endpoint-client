@@ -1,6 +1,7 @@
 package config
 
 type WebSocketConfiguration struct {
+	LogLevel string `default:"info"`
 	Address  string `required:"true" flagUsage:"The address of the server."`
 	Port     string `default:"443" flagUsage:"The port of the server."`
 	Username string `required:"true" flagUsage:"The username of the basic authorization."`
