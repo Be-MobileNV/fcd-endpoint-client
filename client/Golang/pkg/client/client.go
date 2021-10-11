@@ -3,18 +3,15 @@ package client
 import (
 	"encoding/base64"
 	"encoding/json"
-	"flag"
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 	"sync"
 	"time"
 
 	"bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang/pkg/config"
 	"github.com/gorilla/websocket"
-	"github.com/koding/multiconfig"
 	"github.com/sirupsen/logrus"
 )
 
@@ -35,33 +32,6 @@ type WebSocketClient struct {
 
 	writeMessageLock *sync.Mutex
 	Done             chan struct{}
-}
-
-// LoadConfig reads the configuration
-func LoadConfig() *config.WebSocketConfiguration {
-	m := multiconfig.New()
-	cfg := &config.WebSocketConfiguration{}
-	err := m.Load(cfg)
-	if err != nil {
-		if err == flag.ErrHelp {
-			os.Exit(0)
-		}
-		logrus.Fatalf("Failed to load config: %+v", err)
-	} else {
-		logrus.Infof("Loaded cfg %+v", cfg)
-	}
-	if err := m.Validate(cfg); err != nil {
-		logrus.Fatalf("Invalid config: %+v", err)
-	}
-
-	lvl, err := logrus.ParseLevel(cfg.LogLevel)
-	if err != nil {
-		logrus.Fatalf("Invalid log level %s : %+v", cfg.LogLevel, err)
-	} else {
-		logrus.SetLevel(lvl)
-	}
-
-	return cfg
 }
 
 // NewWebSocketClient creates a new WebSocket client.
