@@ -1,0 +1,4 @@
+GOPROXY=https://dev-athens.be-mobile.biz
+GONOSUMDB=bitbucket.org/be-mobile
+GO111MODULE=on
+CGO_ENABLED=0

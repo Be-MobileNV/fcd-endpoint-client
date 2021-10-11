@@ -12,6 +12,7 @@ import (
 	"sync"
 	"time"
 
+	"bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang/pkg/config"
 	"github.com/gorilla/websocket"
 	"github.com/koding/multiconfig"
 	"github.com/sirupsen/logrus"
@@ -27,30 +28,9 @@ const (
 	// pingMessage = "fcd-endpoint-code-sample"
 )
 
-type WebSocketConfiguration struct {
-	Address  string `required:"true" flagUsage:"The address of the server."`
-	Port     string `default:"443" flagUsage:"The port of the server."`
-	Username string `required:"true" flagUsage:"The username of the basic authorization."`
-	Password string `required:"true" flagUsage:"The password of the basic authorization."`
-	TLS      bool   `default:"false" flagUsage:"Use secure communication"`
-}
-
-type GPSPosition struct {
-	VehicleId   string            `json:"vehicleId"`
-	VehicleType int32             `json:"vehicleType"`
-	EngineState int32             `json:"engineState"`
-	Timestamp   int32             `json:"timestamp"`
-	Lon         float32           `json:"lon"`
-	Lat         float32           `json:"lat"`
-	Heading     float32           `json:"heading"`
-	Hdop        float32           `json:"hdop"`
-	Speed       float32           `json:"speed"`
-	Metadata    map[string]string `json:"metadata"`
-}
-
 // WebSocketClient is a client that could send GPS positions over a web socket to a FCD-endpoint server.
 type WebSocketClient struct {
-	cfg        *WebSocketConfiguration
+	cfg        *config.WebSocketConfiguration
 	Connection *websocket.Conn
 
 	writeMessageLock *sync.Mutex
@@ -58,9 +38,9 @@ type WebSocketClient struct {
 }
 
 // LoadConfig reads the configuration
-func LoadConfig() *WebSocketConfiguration {
+func LoadConfig() *config.WebSocketConfiguration {
 	m := multiconfig.New()
-	cfg := &WebSocketConfiguration{}
+	cfg := &config.WebSocketConfiguration{}
 	err := m.Load(cfg)
 	if err != nil {
 		if err == flag.ErrHelp {
@@ -134,7 +114,7 @@ func NewWebSocketClient() (*WebSocketClient, error) {
 }
 
 // SendGPSPosition will send the GPS position to the server
-func (wsc *WebSocketClient) SendGPSPosition(gpsPos *GPSPosition) error {
+func (wsc *WebSocketClient) SendGPSPosition(gpsPos *config.GPSPosition) error {
 	logrus.Infof("Sending GPS position")
 	// Convert to JSON string
 	gpsPosJSON, err := json.Marshal(gpsPos)
