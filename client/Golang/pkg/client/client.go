@@ -19,6 +19,7 @@ const (
 	// Time allowed to write a message to the peer.
 	writeWait = 10 * time.Second
 
+	closeWaitTime = 10 * time.Second
 	// // Send pings to peer with this period.
 	// pingPeriod = 60 * time.Second
 
@@ -36,9 +37,10 @@ type WebSocketClient struct {
 
 // NewWebSocketClient creates a new WebSocket client.
 func NewWebSocketClient(config *config.WebSocketConfiguration) (*WebSocketClient, error) {
-	c := &WebSocketClient{}
-	c.cfg = config
-	c.writeMessageLock = &sync.Mutex{}
+	c := WebSocketClient{
+		cfg:              config,
+		writeMessageLock: &sync.Mutex{},
+	}
 
 	URL := fmt.Sprintf("wss://%s:%s/v1/ws", c.cfg.Address, c.cfg.Port)
 	if !c.cfg.TLS {
@@ -85,9 +87,9 @@ func NewWebSocketClient(config *config.WebSocketConfiguration) (*WebSocketClient
 				logrus.Infof("Received message from server: %s", message)
 			}
 		}
-	}(c)
+	}(&c)
 
-	return c, err
+	return &c, err
 }
 
 // SendGPSPosition will send the GPS position to the server
@@ -110,4 +112,30 @@ func (wsc *WebSocketClient) SendGPSPosition(gpsPos *config.GPSPosition) error {
 		return err
 	}
 	return nil
+}
+
+// Close will send a close message to the server
+func (wsc *WebSocketClient) Close() {
+	logrus.Infof("Closing the websocket by sending a close message")
+
+	wsc.writeMessageLock.Lock()
+	wsc.Connection.SetWriteDeadline(time.Now().Add(writeWait)) //nolint
+	err := wsc.Connection.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
+	wsc.writeMessageLock.Unlock()
+
+	if err != nil {
+		logrus.Errorf("Failed to send close message to server: %v", err)
+	}
+
+	// Wait on 'Done' signal or timeout to close the connection
+	select {
+	case <-wsc.Done:
+		logrus.Infof("Received close response from the server, closing connection")
+	case <-time.After(closeWaitTime):
+		logrus.Warnf("Timeout, no close response received from the server, closing connection")
+	}
+	err = wsc.Connection.Close()
+	if err != nil {
+		logrus.Errorf("Could not close the web socket connection: %v", err)
+	}
 }
