@@ -58,9 +58,9 @@ func LoadConfig() *config.WebSocketConfiguration {
 }
 
 // NewWebSocketClient creates a new WebSocket client.
-func NewWebSocketClient() (*WebSocketClient, error) {
+func NewWebSocketClient(config *config.WebSocketConfiguration) (*WebSocketClient, error) {
 	c := &WebSocketClient{}
-	c.cfg = LoadConfig()
+	c.cfg = config
 	c.writeMessageLock = &sync.Mutex{}
 
 	URL := fmt.Sprintf("wss://%s:%s/v1/ws", c.cfg.Address, c.cfg.Port)
