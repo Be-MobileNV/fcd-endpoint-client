@@ -3,15 +3,17 @@ package main
 import (
 	"encoding/base64"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"net/http"
 	"net/url"
-	"regexp"
+	"os"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/gorilla/websocket"
+	"github.com/koding/multiconfig"
 	"github.com/sirupsen/logrus"
 )
 
@@ -19,18 +21,18 @@ const (
 	// Time allowed to write a message to the peer.
 	writeWait = 10 * time.Second
 
-	// Send pings to peer with this period.
-	pingPeriod = 60 * time.Second
+	// // Send pings to peer with this period.
+	// pingPeriod = 60 * time.Second
 
-	pingMessage = "fcd-endpoint-code-sample"
+	// pingMessage = "fcd-endpoint-code-sample"
 )
 
 type WebSocketConfiguration struct {
-	Address  string `json:"address,omitempty"`
-	Port     string `json:"port,omitempty"`
-	Username string `json:"username,omitempty"`
-	Password string `json:"password,omitempty"`
-	TLS      bool   `json:"tls,omitempty"`
+	Address  string `required:"true" flagUsage:"The address of the server."`
+	Port     string `default:"443" flagUsage:"The port of the server."`
+	Username string `required:"true" flagUsage:"The username of the basic authorization."`
+	Password string `required:"true" flagUsage:"The password of the basic authorization."`
+	TLS      bool   `default:"false" flagUsage:"Use secure communication"`
 }
 
 type GPSPosition struct {
@@ -55,10 +57,30 @@ type WebSocketClient struct {
 	Done             chan struct{}
 }
 
+// LoadConfig reads the configuration
+func LoadConfig() *WebSocketConfiguration {
+	m := multiconfig.New()
+	cfg := &WebSocketConfiguration{}
+	err := m.Load(cfg)
+	if err != nil {
+		if err == flag.ErrHelp {
+			os.Exit(0)
+		}
+		logrus.Fatalf("Failed to load config: %+v", err)
+	} else {
+		logrus.Infof("Loaded cfg %+v", cfg)
+	}
+	if err := m.Validate(cfg); err != nil {
+		logrus.Fatalf("Invalid config: %+v", err)
+	}
+
+	return cfg
+}
+
 // NewWebSocketClient creates a new WebSocket client.
-func NewWebSocketClient(cfg *WebSocketConfiguration) (*WebSocketClient, error) {
+func NewWebSocketClient() (*WebSocketClient, error) {
 	c := &WebSocketClient{}
-	c.cfg = cfg
+	c.cfg = LoadConfig()
 	c.writeMessageLock = &sync.Mutex{}
 
 	URL := fmt.Sprintf("wss://%s:%s/v1/ws", c.cfg.Address, c.cfg.Port)
