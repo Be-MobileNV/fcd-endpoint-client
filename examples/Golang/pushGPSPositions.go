@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math/rand"
 	"time"
 
 	ws "bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang/pkg/client"
@@ -9,14 +8,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// characters to be used in the VehicleID
-const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789"
-
-var seededRand *rand.Rand = rand.New(
-	rand.NewSource(time.Now().UnixNano()))
-
-// load config, create websocketclient using that config and send 100 random gpspositions
-// to the endpoint specified.
+// load config, create websocketclient and send 100 random gpspositions
+// to the specified endpoint.
 func main() {
 	cfg := cfg.LoadConfig()
 	logrus.Debugf("Config loaded: %s", cfg)
@@ -30,33 +23,4 @@ func main() {
 		wsc.SendGPSPosition(getGPSPosition())
 		time.Sleep(250 * time.Millisecond)
 	}
-}
-
-// generate random GPS Position to push to endpoint
-func getGPSPosition() *cfg.GPSPosition {
-	ymin := 46.691265
-	ymax := 52.076458
-	xmin := 4.565761
-	xmax := 6.257655
-	pos := cfg.GPSPosition{
-		VehicleId:   stringWithCharset(),
-		VehicleType: 1,
-		EngineState: 1,
-		Timestamp:   time.Now().UnixNano() / 1000000,
-		Lon:         (rand.Float64() * (xmax - xmin)) + xmin,
-		Lat:         (rand.Float64() * (ymax - ymin)) + ymin,
-		Heading:     rand.Float32(),
-		Hdop:        rand.Float32(),
-		Speed:       rand.Float32() * 120,
-	}
-	return &pos
-}
-
-// generate random VehicleID
-func stringWithCharset() string {
-	b := make([]byte, 12)
-	for i := range b {
-		b[i] = charset[seededRand.Intn(len(charset))]
-	}
-	return string(b)
 }
