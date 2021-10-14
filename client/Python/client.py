@@ -1,9 +1,4 @@
-import time
-import base64
-import logging
-import argparse
-import json
-import websockets
+import time, base64, logging, argparse, json, websockets, asyncio
 
 close_wait_time = 10
 
@@ -32,11 +27,11 @@ class gpsPosition:
 
 class WebSocket:
     def __init__(self, args):
-        self.logger = self.setLogger(self, args)
+        self.logger = self.setLogger(args)
         self.url = getURL(args)
         self.username = args.username
         self.password = args.password
-        self.client = self.connect()
+        self.positions = []
     
     def setLogger(self, args):
         logger = logging.getLogger("FCD Endpoint Websocket Client")
@@ -45,26 +40,42 @@ class WebSocket:
             logger.setLevel(logging.DEBUG)
         else:
             logging.basicConfig(level=logging.INFO)
+        logger.info("Loaded config")
         return logger
 
-    def connect(self):
+    async def connect(self):
         header = []
         if self.username != "" and self.password != "":
             basic_auth_str = self.username + ":" + self.password
             header = ["Authorization: Basic {}".format(base64.b64encode(basic_auth_str.encode('ascii')).decode())]
         self.logger.info("Connecting to {}".format(self.url))
-        return websockets.client.connect(self.url, extra_headers=header, ping_interval=60, ping_timeout=10, close_timeout=10)
+        async for websocket in  websockets.connect(self.url, extra_headers=header, ping_interval=60, ping_timeout=10, close_timeout=10):
+            try:
+                async for pos in self.GPSPositions():
+                    self.logger.info("Sending GPS position")
+                    websocket.send(pos)
+            except websockets.ConnectionClosed:
+                continue
     
+    async def GPSPositions(self):
+        for pos in self.positions:
+            yield pos
+            self.positions.remove(pos)
+
     def sendGPSPosition(self, position):
         self.logger.debug("GPS position JSON: {}".format(position))
-        self.logger.info("Sending GPS position")
-        self.client.send(position)
-        self.logger.info("Waiting {} seconds on server to receive possible errors".format(close_wait_time))
-        time.sleep(close_wait_time)  # Sleep is mandatory, otherwise errors are not received anymore from the server
-    
+        self.positions.append(position)
+        
+
     def close(self):
         self.logger.info("Closing the websocket by sending a close message")
         self.client.close()
+
+def initiateWebSocket():
+    args = loadConfig()
+    ws = WebSocket(args)
+    asyncio.run(ws.connect())
+    return ws
 
 def loadConfig():
     parser = argparse.ArgumentParser(description="FCD Endpoint Websocket Client")
@@ -82,11 +93,6 @@ def loadConfig():
 
     parser.add_argument('--verbose', default=False, action="store_true", help="Increase log verbosity", )
     return parser.parse_args()
-
-def initiateWebSocket():
-    args = loadConfig()
-    ws = WebSocket(args)
-    return ws
 
 def getURL(args):
     if args.tls in ["true", "True"]:
