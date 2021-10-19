@@ -35,7 +35,7 @@ async def main():
     await ws.send(generate_positions())
 
 
-async def generate_positions(n=1000):
+async def generate_positions(n=100):
     """
     Generate n random positions
     """
