@@ -46,10 +46,10 @@ async def generate_positions(n=100):
 def get_position():
     ymin, xmin = 46.691265, 4.565761
     ymax, xmax = 52.076458, 6.257655
-    pos = client.GPSPosition(vehicle_id=get_vehicle_id(), vehicle_type=1,
+    pos = client.GPSPosition(vehicle_id=get_vehicle_id(), vehicle_type=1, engine_state=1,
         timestamp=int(time.time() * 1000), lon=random.uniform(xmin, xmax), lat=random.uniform(ymin,ymax),
         heading=random.uniform(0, 360), hdop=random.uniform(0, 10), speed=random.uniform(0, 120))
-    return pos.toJSON()
+    return pos
 
 
 def get_vehicle_id():

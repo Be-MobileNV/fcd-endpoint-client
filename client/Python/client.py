@@ -2,13 +2,15 @@ import base64
 import logging
 import json
 import websockets
+import sys
 import asyncio
 
 
 class GPSPosition:
-    def __init__(self, vehicle_id, vehicle_type, timestamp, lon, lat, heading, hdop, speed):
+    def __init__(self, vehicle_id, vehicle_type, engine_state, timestamp, lon, lat, heading, hdop, speed):
         self.vehicleId = vehicle_id
         self.vehicleType = vehicle_type
+        self.engineState = engine_state
         self.timestamp = timestamp
         self.lon = lon
         self.lat = lat
@@ -19,6 +21,7 @@ class GPSPosition:
     def toJSON(self):
         gps_position = {"vehicleId": self.vehicleId,
                         "vehicleType": self.vehicleType,
+                        "engineState": self.engineState,
                         "timestamp": self.timestamp,
                         "lon": self.lon,
                         "lat": self.lat,
@@ -27,6 +30,27 @@ class GPSPosition:
                         "speed": self.speed,
                         }
         return json.dumps(gps_position)
+    
+    def Validate(self):
+        if not isinstance(self.vehicleId, int) or  sys.getsizeof(self.vehicleId) > 64:
+            return False
+        if not isinstance(self.vehicleType, int) or self.vehicleType < 0 or self.vehicleType > 19:
+            return False
+        if not isinstance(self.engineState, int) or self.engineState < -1 or self.engineState > 1:
+            return False
+        if not isinstance(self.timestamp, int):
+            return False
+        if not isinstance(self.lon, float) or self.lon < -180 or self.lon > 180:
+            return False
+        if not isinstance(self.lat, float) or self.lat < -180 or self.lat > 180:
+            return False
+        if not isinstance(self.heading, float) or self.heading < 0 or self.heading > 359:
+            return False
+        if not isinstance(self.hdop, float) or self.hdop < 0:
+            return False
+        if not isinstance(self.speed, float) or self.speed < 0:
+            return False
+        return True
 
 
 class WebSocket:
@@ -68,12 +92,15 @@ class WebSocket:
             async for pos in generator:
                 self.logger.info("Sending GPS position")
                 # We need to wrap websocket.send(pos) in a Task in order to handle exceptions
-                sendtask = asyncio.create_task(websocket.send(pos))
-                try:
-                    await sendtask
-                except Exception as E:
-                    self.logger.error(E)
-                    break  # Force a reconnection
+                if pos.Validate():
+                    sendtask = asyncio.create_task(websocket.send(pos.toJSON()))
+                    try:
+                        await sendtask
+                    except Exception as E:
+                        self.logger.error(E)
+                        break  # Force a reconnection
+                else :
+                    break
             else:
                 # generator finished, exit
                 break

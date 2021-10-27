@@ -3,6 +3,7 @@ package config
 import (
 	"flag"
 	"os"
+	"unsafe"
 
 	"github.com/koding/multiconfig"
 	"github.com/sirupsen/logrus"
@@ -28,6 +29,34 @@ type GPSPosition struct {
 	Hdop        float32           `json:"hdop"`
 	Speed       float32           `json:"speed"`
 	Metadata    map[string]string `json:"metadata"`
+}
+
+func (g *GPSPosition) Validate() bool {
+	if unsafe.Sizeof(g.VehicleId) > 64 {
+		return false
+	}
+	if g.VehicleType < 0 || g.VehicleType > 19 {
+		return false
+	}
+	if g.EngineState < -1 || g.EngineState > 1 {
+		return false
+	}
+	if g.Lat < -180 || g.Lat > 180 {
+		return false
+	}
+	if g.Lon < -180 || g.Lon > 180 {
+		return false
+	}
+	if g.Heading < 0 || g.Heading > 359 {
+		return false
+	}
+	if g.Hdop < 0 {
+		return false
+	}
+	if g.Speed < 0 {
+		return false
+	}
+	return true
 }
 
 // LoadConfig reads the configuration
