@@ -11,9 +11,8 @@ info:
 servers:
   - url: 'wss://provider-fcd.bemobile.biz'
 paths:
-  /ws:
+  /wss:
     get:
-      summary: Your GET endpoint
       tags: []
       responses:
         '200':
@@ -23,7 +22,7 @@ paths:
         '500':
           description: Internal Server Error
       operationId: get-ws
-      description: used to push gps-positions to endpoint
+      description: '!!! Not an actual get request !!! The connection to the server needs to be a websocket. This is used to send a GPS position to an endpoint'
       x-internal: false
       requestBody:
         content:
@@ -55,24 +54,51 @@ components:
       properties:
         vehicleId:
           type: string
+          example: 'ASCII-Vehicle-ID'
+          description: 'Vehicle or FCD provider vehicle session ID (max 64 bytes)'
         vehicleType:
           type: integer
+          example: '1'
+          description: 'Vehicle type'
         engineState:
           type: integer
+          example: '1'
+          description: |
+            '-1: unknown
+            0: off
+            1: on'
         timestamp:
           type: integer
+          example: '1479673407'
+          description: 'Unix Epoch timestamp in milliseconds (i.e. number of milliseconds since Jan 01 1970 (UTC))'
         lon:
           type: number
+          format: float
+          example: '51.019426'
+          description: 'Longitude'
         lat:
           type: number
+          format: float
+          example: '3.768572'
+          description: 'Latitude'
         heading:
           type: number
+          format: float
+          example: '270'
+          description: 'Heading relative to north (0 degrees), range 0 - 359'
         hdop:
           type: number
+          format: float
+          example: '5'
+          description: 'Accuracy in meters'
         speed:
           type: number
+          format: float
+          example: '120.5'
+          description: 'Speed in kilometers per hour'
         metadata:
           type: object
+          description: 'Supplier specific information'
       required:
         - vehicleId
         - vehicleType
