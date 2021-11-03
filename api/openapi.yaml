@@ -29,7 +29,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GPSPosition'
-        description: ''
+        description: The JSON of the GPS Position
       parameters: []
     parameters: []
 components:
@@ -54,33 +54,35 @@ components:
       properties:
         vehicleId:
           type: string
-          example: 'ASCII-Vehicle-ID'
-          description: 'Vehicle or FCD provider vehicle session ID (max 64 bytes)'
+          example: ASCII-Vehicle-ID
+          description: Vehicle or FCD provider vehicle session ID (max 64 bytes)
         vehicleType:
           type: integer
           example: '1'
-          description: 'Vehicle type'
+          description: Vehicle type (see object definition below)
+          minimum: 0
+          maximum: 19
         engineState:
           type: integer
           example: '1'
           description: |
-            '-1: unknown
-            0: off
-            1: on'
+            -1: unknown |
+            0: off |
+            1: on 
         timestamp:
           type: integer
           example: '1479673407'
-          description: 'Unix Epoch timestamp in milliseconds (i.e. number of milliseconds since Jan 01 1970 (UTC))'
+          description: Unix Epoch timestamp in milliseconds (i.e. number of milliseconds since Jan 01 1970 (UTC))
         lon:
           type: number
           format: float
           example: '51.019426'
-          description: 'Longitude'
+          description: Longitude
         lat:
           type: number
           format: float
           example: '3.768572'
-          description: 'Latitude'
+          description: Latitude
         heading:
           type: number
           format: float
@@ -90,24 +92,64 @@ components:
           type: number
           format: float
           example: '5'
-          description: 'Accuracy in meters'
+          description: Accuracy in meters
         speed:
           type: number
           format: float
           example: '120.5'
-          description: 'Speed in kilometers per hour'
+          description: Speed in kilometers per hour
         metadata:
           type: object
-          description: 'Supplier specific information'
+          description: Supplier specific information
       required:
         - vehicleId
-        - vehicleType
-        - engineState
         - timestamp
         - lon
         - lat
-        - heading
-        - hdop
-        - speed
-        - metadata
+    vehicleType:
+      type: object
+      title: vehicleType
+      properties:
+        Unknown:
+          type: "0"
+        Passenger car (default):
+          type: "1"
+        Light truck:
+          type: "2"
+        Heavy truck (tractor + trailer):
+          type: "3"
+        Bus:
+          type: "4"
+        Taxi:
+          type: "5"
+        Delivery van:
+          type: "6"
+        Ship:
+          type: "7"
+        Light rail (tram, metro):
+          type: "8"
+        Heavy rail (passenger and cargo train):
+          type: "9"
+        Other:
+          type: "10"
+        Truck mounted impact attenuator (crash cushion):
+          type: "11"
+        Ambulance:
+          type: "12"
+        Fire engine:
+          type: "13"
+        Police vehicle:
+          type: "14"
+        Highway inspector:
+          type: "15"
+        Tow truck:
+          type: "16"
+        Gully emptier:
+          type: "17"
+        Mower:
+          type: "18"
+        Watering vehicle:
+          type: "19"
+      description: These are the static values that can be used as vehicleID in the JSON for the GPS Position
   securitySchemes: {}
+
