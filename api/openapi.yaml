@@ -1,0 +1,155 @@
+openapi: 3.0.0
+info:
+  title: fcd-endpoint-client
+  version: 1.0.0
+  description: FCD-endpoint-client
+  contact:
+    name: Be-Mobile API Support
+    email: api-support@be-mobile.com
+  x-audience: external-partner
+  x-business-domain: data
+servers:
+  - url: 'wss://provider-fcd.bemobile.biz'
+paths:
+  /wss:
+    get:
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+      operationId: get-ws
+      description: '!!! Not an actual get request !!! The connection to the server needs to be a websocket. This is used to send a GPS position to an endpoint'
+      x-internal: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GPSPosition'
+        description: The JSON of the GPS Position
+      parameters: []
+    parameters: []
+components:
+  schemas:
+    GPSPosition:
+      description: GPS Position
+      type: object
+      x-examples:
+        example:
+          vehicleId: ASCII-Vehicle-ID
+          vehicleType: 1
+          engineState: 0
+          timestamp: 1479673407
+          lon: 51.019426
+          lat: 3.768572
+          heading: 270
+          hdop: 5
+          speed: 120.5
+          metadata:
+            routeNumber: 62
+      title: ''
+      properties:
+        vehicleId:
+          type: string
+          example: ASCII-Vehicle-ID
+          description: Vehicle or FCD provider vehicle session ID (max 64 bytes)
+        vehicleType:
+          type: integer
+          example: '1'
+          description: Vehicle type (see object definition below)
+          minimum: 0
+          maximum: 19
+        engineState:
+          type: integer
+          example: '1'
+          description: |
+            -1: unknown |
+            0: off |
+            1: on 
+        timestamp:
+          type: integer
+          example: '1479673407'
+          description: Unix Epoch timestamp in milliseconds (i.e. number of milliseconds since Jan 01 1970 (UTC))
+        lon:
+          type: number
+          format: float
+          example: '51.019426'
+          description: Longitude
+        lat:
+          type: number
+          format: float
+          example: '3.768572'
+          description: Latitude
+        heading:
+          type: number
+          format: float
+          example: '270'
+          description: 'Heading relative to north (0 degrees), range 0 - 359'
+        hdop:
+          type: number
+          format: float
+          example: '5'
+          description: Accuracy in meters
+        speed:
+          type: number
+          format: float
+          example: '120.5'
+          description: Speed in kilometers per hour
+        metadata:
+          type: object
+          description: Supplier specific information
+      required:
+        - vehicleId
+        - timestamp
+        - lon
+        - lat
+    vehicleType:
+      type: object
+      title: vehicleType
+      properties:
+        Unknown:
+          type: "0"
+        Passenger car (default):
+          type: "1"
+        Light truck:
+          type: "2"
+        Heavy truck (tractor + trailer):
+          type: "3"
+        Bus:
+          type: "4"
+        Taxi:
+          type: "5"
+        Delivery van:
+          type: "6"
+        Ship:
+          type: "7"
+        Light rail (tram, metro):
+          type: "8"
+        Heavy rail (passenger and cargo train):
+          type: "9"
+        Other:
+          type: "10"
+        Truck mounted impact attenuator (crash cushion):
+          type: "11"
+        Ambulance:
+          type: "12"
+        Fire engine:
+          type: "13"
+        Police vehicle:
+          type: "14"
+        Highway inspector:
+          type: "15"
+        Tow truck:
+          type: "16"
+        Gully emptier:
+          type: "17"
+        Mower:
+          type: "18"
+        Watering vehicle:
+          type: "19"
+      description: These are the static values that can be used as vehicleID in the JSON for the GPS Position
+  securitySchemes: {}
+
