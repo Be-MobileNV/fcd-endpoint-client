@@ -42,9 +42,9 @@ class GPSPosition:
             return False
         if not isinstance(self.lon, float) or self.lon < -180 or self.lon > 180:
             return False
-        if not isinstance(self.lat, float) or self.lat < -180 or self.lat > 180:
+        if not isinstance(self.lat, float) or self.lat < -90 or self.lat > 90:
             return False
-        if not isinstance(self.heading, float) or self.heading < 0 or self.heading > 359:
+        if not isinstance(self.heading, float) or self.heading < 0 or self.heading >= 360:
             return False
         if not isinstance(self.hdop, float) or self.hdop < 0:
             return False
