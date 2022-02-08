@@ -41,13 +41,13 @@ func (g *GPSPosition) Validate() bool {
 	if g.EngineState < -1 || g.EngineState > 1 {
 		return false
 	}
-	if g.Lat < -180 || g.Lat > 180 {
+	if g.Lat < -90 || g.Lat > 90 {
 		return false
 	}
 	if g.Lon < -180 || g.Lon > 180 {
 		return false
 	}
-	if g.Heading < 0 || g.Heading > 359 {
+	if g.Heading < 0 || g.Heading >= 360 {
 		return false
 	}
 	if g.Hdop < 0 {

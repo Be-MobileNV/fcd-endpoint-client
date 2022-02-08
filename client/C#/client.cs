@@ -46,10 +46,10 @@ namespace WSClient
         if (!(-180 <= this.Longitude <= 180)){
             return false;
         }
-        if (!(-180 <= this.Latitude <= 180)){
+        if (!(-90 <= this.Latitude <= 90)){
             return false;
         }
-        if (!(0 <= this.Heading <= 359)){
+        if (!(0 <= this.Heading < 360)){
             return false;
         }
         if (this.HDOP < 0){
