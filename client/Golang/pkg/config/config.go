@@ -19,17 +19,17 @@ type WebSocketConfiguration struct {
 }
 
 type GPSPosition struct {
-	VehicleId   string             `json:"vehicleId"`
-	VehicleType *int32             `json:"vehicleType,omitempty"`
-	EngineState *int32             `json:"engineState,omitempty"`
-	Timestamp   int64              `json:"timestamp"`
-	Lon         float64            `json:"lon"`
-	Lat         float64            `json:"lat"`
-	Heading     *float32           `json:"heading,omitempty"`
-	Hdop        *float32           `json:"hdop,omitempty"`
-	Speed       *float32           `json:"speed,omitempty"`
-	Alt         *float32           `json:"alt,omitempty"`
-	Metadata    *map[string]string `json:"metadata,omitempty"`
+	VehicleId   string            `json:"vehicleId"`
+	VehicleType *int32            `json:"vehicleType,omitempty"`
+	EngineState *int32            `json:"engineState,omitempty"`
+	Timestamp   int64             `json:"timestamp"`
+	Lon         float64           `json:"lon"`
+	Lat         float64           `json:"lat"`
+	Heading     *float32          `json:"heading,omitempty"`
+	Hdop        *float32          `json:"hdop,omitempty"`
+	Speed       *float32          `json:"speed,omitempty"`
+	Alt         *float32          `json:"alt,omitempty"`
+	Metadata    map[string]string `json:"metadata,omitempty"`
 }
 
 func (g *GPSPosition) Validate() bool {
