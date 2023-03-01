@@ -55,6 +55,7 @@ def get_position():
         hdop=random.uniform(0, 10),
         speed=None, # In this example, the speed is unknown, so we set it to None
         vehicle_type=1,
+        # In this example, engine_state is omitted which is the same as passing None
     )
     return pos
 
