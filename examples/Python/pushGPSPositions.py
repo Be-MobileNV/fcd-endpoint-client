@@ -31,16 +31,24 @@ def loadConfig():
 
 async def main():
     args = loadConfig()
+
+    queue = asyncio.Queue(maxsize=1000)
     ws = client.WebSocket(args)
-    await ws.send(generate_positions())
+    wstask = asyncio.create_task(ws.send(queue))
+
+    await generate_positions(queue)        # Generate positions in the queue
+    await generate_positions(queue, n=10)  # Generate another batch of positions in the queue
+    await queue.join()                     # Wait for all positions in the queue to be sent
+    wstask.cancel()                        # Cancel websocket connection task
 
 
-async def generate_positions(n=100):
+async def generate_positions(queue, n=100):
     """
-    Generate n random positions
+    Generate n random positions and push them to an asyncio.Queue
     """
     for i in range(n):
-        yield get_position()
+        pos = get_position()
+        await queue.put(pos)
 
 
 def get_position():
