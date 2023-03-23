@@ -88,7 +88,7 @@ class WebSocket:
         logger.info("Loaded config")
         return logger
 
-    async def send(self, generator):
+    async def send(self, queue):
         header = []
         if self.username != "" and self.password != "":
             basic_auth_str = self.username + ":" + self.password
@@ -97,24 +97,25 @@ class WebSocket:
         async for websocket in websockets.connect(self.url, extra_headers=header, ping_interval=60, ping_timeout=10, close_timeout=10):
             self.logger.info("Opened websocket connection")
             task = asyncio.create_task(self.handle_replies(websocket))
-            async for pos in generator:
+            while True:
+                pos = await queue.get()
                 try:
-                    pos.validate()
-                except Exception as E:
-                    self.logger.error(E)
-                    continue
+                    try:
+                        pos.validate()
+                    except Exception as E:
+                        self.logger.error(E)
+                        continue
 
-                self.logger.info("Sending GPS position")
-                # We need to wrap websocket.send(pos) in a Task in order to handle exceptions
-                sendtask = asyncio.create_task(websocket.send(pos.to_json()))
-                try:
-                    await sendtask
-                except Exception as E:
-                    self.logger.error(E)
-                    break  # Force a reconnection
-            else:
-                # generator finished, exit
-                break
+                    self.logger.info("Sending GPS position")
+                    # We need to wrap websocket.send(pos) in a Task in order to handle exceptions
+                    sendtask = asyncio.create_task(websocket.send(pos.to_json()))
+                    try:
+                        await sendtask
+                    except Exception as E:
+                        self.logger.error(E)
+                        break  # Force a reconnection
+                finally:
+                    queue.task_done()
             task.cancel()
 
     async def handle_replies(self, websocket):
