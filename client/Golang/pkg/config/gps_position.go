@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	year2000MUnixMilli = time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC).UnixMilli()
+	year2000UnixMilli = time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC).UnixMilli()
 )
 
 type GPSPosition struct {
@@ -42,8 +42,8 @@ func (g *GPSPosition) Validate() error {
 	if g.Lon == 0 && g.Lat == 0 {
 		return fmt.Errorf("coordinates (0,0) not allowed")
 	}
-	if g.Timestamp < year2000MUnixMilli {
-		return fmt.Errorf("invalid timestamp: must be after 1 janaruary 2000 00h00")
+	if g.Timestamp < year2000UnixMilli {
+		return fmt.Errorf("invalid timestamp: must be after 1 january 2000")
 	}
 	if g.Heading != nil && !(*g.Heading >= 0 && *g.Heading < 360) {
 		return fmt.Errorf("invalid non-nil heading: must be in interval [0, 360[")
