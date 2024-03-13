@@ -48,10 +48,10 @@ func (g *GPSPosition) Validate() error {
 	if g.Heading != nil && !(*g.Heading >= 0 && *g.Heading < 360) {
 		return fmt.Errorf("invalid non-nil heading: must be in interval [0, 360[")
 	}
-	if g.Hdop != nil && *g.Hdop < 0 {
+	if g.Hdop != nil && !(*g.Hdop >= 0) {
 		return fmt.Errorf("invalid non-nil hdop: must be positive")
 	}
-	if g.Speed != nil && *g.Speed < 0 {
+	if g.Speed != nil && !(*g.Speed >= 0) {
 		return fmt.Errorf("invalid non-nil speed: must be positive")
 	}
 	return nil
