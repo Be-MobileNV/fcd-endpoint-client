@@ -13,6 +13,8 @@ const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789
 var seededRand *rand.Rand = rand.New(
 	rand.NewSource(time.Now().UnixNano()))
 
+func ptr[T any](x T) *T { return &x }
+
 // generate random GPS Position to push to endpoint
 func getGPSPosition() *cfg.GPSPosition {
 	ymin := 46.691265
@@ -21,14 +23,14 @@ func getGPSPosition() *cfg.GPSPosition {
 	xmax := 6.257655
 	pos := cfg.GPSPosition{
 		VehicleId:   stringWithCharset(),
-		VehicleType: 1,
-		EngineState: 1,
-		Timestamp:   time.Now().UnixNano() / 1000000,
+		VehicleType: ptr[int32](1),
+		EngineState: ptr[int32](1),
+		Timestamp:   time.Now().UnixMilli(),
 		Lon:         (rand.Float64() * (xmax - xmin)) + xmin,
 		Lat:         (rand.Float64() * (ymax - ymin)) + ymin,
-		Heading:     rand.Float32(),
-		Hdop:        rand.Float32(),
-		Speed:       rand.Float32() * 120,
+		Heading:     ptr(rand.Float32()),
+		Hdop:        ptr(rand.Float32()),
+		Speed:       ptr(rand.Float32() * 120),
 	}
 	return &pos
 }
