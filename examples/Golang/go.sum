@@ -1,5 +1,5 @@
-bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang v0.0.0-20211011101846-222c4cd36765 h1:khjGk/PftyPnrunDlDREfkB8p6EIiYJUPF62WV/l7xQ=
-bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang v0.0.0-20211011101846-222c4cd36765/go.mod h1:2QlwIMNRvWMZ0I97FZafKiZcuGoZOeIgfXszIB8n3d0=
+bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang v0.0.0-20230323120134-61c9106d2641 h1:BC1MZfO+os5DJgY/3lX3yVJY0IarT1GF8JtLzm4UxLI=
+bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang v0.0.0-20230323120134-61c9106d2641/go.mod h1:2QlwIMNRvWMZ0I97FZafKiZcuGoZOeIgfXszIB8n3d0=
 github.com/BurntSushi/toml v0.4.1 h1:GaI7EiDXDRfa8VshkTj7Fym7ha+y8/XxIgD2okUIjLw=
 github.com/BurntSushi/toml v0.4.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=

@@ -12,11 +12,11 @@ import (
 // to the specified endpoint.
 func main() {
 	cfg := cfg.LoadConfig()
-	logrus.Debugf("Config loaded: %s", cfg)
+	logrus.Debugf("Config loaded: %v", cfg)
 	wsc, err := ws.NewWebSocketClient(cfg)
-	logrus.Debugf("WebSocketClient initiated: %s", wsc)
+	logrus.Debugf("WebSocketClient initiated: %v", wsc)
 	if err != nil {
-		logrus.Errorf("Could not initiate websocketclient: %s", err)
+		logrus.Errorf("Could not initiate websocketclient: %v", err)
 	}
 	defer wsc.Close()
 	for i := 0; i < 100; i++ {
