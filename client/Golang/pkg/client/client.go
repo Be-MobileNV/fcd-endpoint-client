@@ -94,8 +94,8 @@ func NewWebSocketClient(config *config.WebSocketConfiguration) (*WebSocketClient
 
 // SendGPSPosition will send the GPS position to the server
 func (wsc *WebSocketClient) SendGPSPosition(gpsPos *config.GPSPosition) error {
-	if !gpsPos.Validate() {
-		return fmt.Errorf("validation of gpsPosition did not succeed")
+	if err := gpsPos.Validate(); err != nil {
+		return fmt.Errorf("validation of gpsPosition did not succeed: %w", err)
 	}
 	logrus.Infof("Sending GPS position")
 	// Convert to JSON string
