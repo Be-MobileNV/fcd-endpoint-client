@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang/pkg/config"
+	"github.com/Be-MobileNV/fcd-endpoint-client/client/Golang/pkg/config"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
 )
