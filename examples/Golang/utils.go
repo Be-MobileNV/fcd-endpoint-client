@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"time"
 
-	cfg "bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang/pkg/config"
+	cfg "github.com/Be-MobileNV/fcd-endpoint-client/client/Golang/pkg/config"
 )
 
 // characters to be used in the VehicleID

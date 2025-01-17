@@ -1,10 +1,10 @@
-module bitbucket.org/be-mobile/fcd-endpoint-client/test/Golang
+module github.com/Be-MobileNV/fcd-endpoint-client/examples/Golang
 
 go 1.18
 
 require (
-	bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang v0.0.0-20230323120134-61c9106d2641
-	github.com/sirupsen/logrus v1.8.1
+	github.com/Be-MobileNV/fcd-endpoint-client/client/Golang v0.0.0-20250117092858-069191ab571d
+	github.com/sirupsen/logrus v1.9.3
 )
 
 require (
@@ -13,6 +13,6 @@ require (
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/koding/multiconfig v0.0.0-20171124222453-69c27309b2d7 // indirect
-	golang.org/x/sys v0.0.0-20191026070338-33540a1f6037 // indirect
+	golang.org/x/sys v0.29.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

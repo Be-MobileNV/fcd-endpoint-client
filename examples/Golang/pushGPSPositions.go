@@ -3,8 +3,8 @@ package main
 import (
 	"time"
 
-	ws "bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang/pkg/client"
-	cfg "bitbucket.org/be-mobile/fcd-endpoint-client/client/Golang/pkg/config"
+	ws "github.com/Be-MobileNV/fcd-endpoint-client/client/Golang/pkg/client"
+	cfg "github.com/Be-MobileNV/fcd-endpoint-client/client/Golang/pkg/config"
 	"github.com/sirupsen/logrus"
 )
 
