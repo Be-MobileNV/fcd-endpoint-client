@@ -3,7 +3,7 @@ module github.com/Be-MobileNV/fcd-endpoint-client/client/Golang
 go 1.18
 
 require (
-	github.com/gorilla/websocket v1.4.2
+	github.com/coder/websocket v1.8.13
 	github.com/koding/multiconfig v0.0.0-20171124222453-69c27309b2d7
 	github.com/sirupsen/logrus v1.9.3
 )
