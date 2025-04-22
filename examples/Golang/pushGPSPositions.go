@@ -1,26 +1,37 @@
 package main
 
 import (
+	"context"
+	"encoding/json"
 	"time"
 
 	ws "github.com/Be-MobileNV/fcd-endpoint-client/client/Golang/pkg/client"
-	cfg "github.com/Be-MobileNV/fcd-endpoint-client/client/Golang/pkg/config"
+	"github.com/Be-MobileNV/fcd-endpoint-client/client/Golang/pkg/config"
 	"github.com/sirupsen/logrus"
 )
 
-// load config, create websocketclient and send 100 random gpspositions
+// Load config, create WebSocketClient and send 100 random GPS positions
 // to the specified endpoint.
 func main() {
-	cfg := cfg.LoadConfig()
-	logrus.Debugf("Config loaded: %v", cfg)
-	wsc, err := ws.NewWebSocketClient(cfg)
-	logrus.Debugf("WebSocketClient initiated: %v", wsc)
+	cfg := &config.WebSocketConfiguration{
+		Address: "127.0.0.1",
+		Port:    "8080",
+		TLS:     false,
+	}
+	wsc, err := ws.NewWebSocketClient(context.Background(), cfg)
 	if err != nil {
 		logrus.Errorf("Could not initiate websocketclient: %v", err)
+		return
 	}
 	defer wsc.Close()
-	for i := 0; i < 100; i++ {
-		wsc.SendGPSPosition(getGPSPosition())
+	for range 100 {
+		pos := getGPSPosition()
+		p, _ := json.Marshal(pos)
+		logrus.Infof("Sending %d bytes", len(p))
+		err = wsc.SendGPSPosition(context.Background(), pos)
+		if err != nil {
+			logrus.Errorf("failed to send GPS position: %v", err)
+		}
 		time.Sleep(250 * time.Millisecond)
 	}
 }
