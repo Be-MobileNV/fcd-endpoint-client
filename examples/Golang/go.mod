@@ -2,7 +2,7 @@ module github.com/Be-MobileNV/fcd-endpoint-client/examples/Golang
 
 go 1.22
 
-replace github.com/Be-MobileNV/fcd-endpoint-client/client/Golang => github.com/TomAlard/fcd-endpoint-client/client/Golang v0.0.0-20250422093010-1ba02894ddbc
+replace github.com/Be-MobileNV/fcd-endpoint-client/client/Golang => github.com/TomAlard/fcd-endpoint-client/client/Golang v0.0.0-20250512093645-a5133192c2a9
 
 require (
 	github.com/Be-MobileNV/fcd-endpoint-client/client/Golang v0.0.0-20250117092858-069191ab571d

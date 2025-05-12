@@ -2,6 +2,8 @@ github.com/BurntSushi/toml v0.4.1 h1:GaI7EiDXDRfa8VshkTj7Fym7ha+y8/XxIgD2okUIjLw
 github.com/BurntSushi/toml v0.4.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/TomAlard/fcd-endpoint-client/client/Golang v0.0.0-20250422093010-1ba02894ddbc h1:xdu9sxzWGLbgEI5A2qqnOpWfz882+tJcGMolU+GoipU=
 github.com/TomAlard/fcd-endpoint-client/client/Golang v0.0.0-20250422093010-1ba02894ddbc/go.mod h1:oxlZzF57jEKbz+vMqWR1mMA/1pfJwxyuC855P8QAuCY=
+github.com/TomAlard/fcd-endpoint-client/client/Golang v0.0.0-20250512093645-a5133192c2a9 h1:FbKmEOFz37409FqYc2NBqP0SfrGzg3c5kFJjM7XfH0U=
+github.com/TomAlard/fcd-endpoint-client/client/Golang v0.0.0-20250512093645-a5133192c2a9/go.mod h1:bmD8yMRFwZDbl5DC55K0Y77kIHbh5oplgHqRhyrUFOY=
 github.com/coder/websocket v1.8.13 h1:f3QZdXy7uGVz+4uCJy2nTZyM0yTBj8yANEHhqlXZ9FE=
 github.com/coder/websocket v1.8.13/go.mod h1:LNVeNrXQZfe5qhS9ALED3uA+l5pPqvwXg3CKoDBB2gs=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

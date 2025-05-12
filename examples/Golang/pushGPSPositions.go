@@ -10,6 +10,10 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+func logErrors(err error) {
+	logrus.Errorf("received error from server: %v", err)
+}
+
 // Load config, create WebSocketClient and send 100 random GPS positions
 // to the specified endpoint.
 func main() {
@@ -18,7 +22,7 @@ func main() {
 		Port:    "8080",
 		TLS:     false,
 	}
-	wsc, err := ws.NewWebSocketClient(context.Background(), cfg)
+	wsc, err := ws.NewWebSocketClient(context.Background(), cfg, logErrors)
 	if err != nil {
 		logrus.Errorf("Could not initiate websocketclient: %v", err)
 		return
