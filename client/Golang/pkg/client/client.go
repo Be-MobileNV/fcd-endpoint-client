@@ -20,13 +20,14 @@ const writeWait = 10 * time.Second
 
 // WebSocketClient is a client that could send GPS positions over a web socket to a FCD-endpoint server.
 type WebSocketClient struct {
-	cfg        *config.WebSocketConfiguration
-	Connection *websocket.Conn
+	cfg           *config.WebSocketConfiguration
+	Connection    *websocket.Conn
+	errorCallback func(error)
 }
 
 // NewWebSocketClient creates a new WebSocket client.
-func NewWebSocketClient(ctx context.Context, config *config.WebSocketConfiguration) (*WebSocketClient, error) {
-	c := WebSocketClient{cfg: config}
+func NewWebSocketClient(ctx context.Context, config *config.WebSocketConfiguration, errorCallback func(error)) (*WebSocketClient, error) {
+	c := WebSocketClient{cfg: config, errorCallback: errorCallback}
 
 	URL := fmt.Sprintf("wss://%s:%s/v1/ws", c.cfg.Address, c.cfg.Port)
 	if !c.cfg.TLS {
@@ -52,27 +53,29 @@ func NewWebSocketClient(ctx context.Context, config *config.WebSocketConfigurati
 		return nil, err
 	}
 
-	go func(wsc *WebSocketClient) {
-		for {
-			_, message, err := wsc.Connection.Read(ctx)
-			if err != nil {
-				if websocket.CloseStatus(err) == websocket.StatusNormalClosure {
-					logrus.Infof("Received message from server: '%v'", err)
-				} else {
-					logrus.Errorf("Failed to read the message from the server: %v", err)
-				}
-				return
-			}
-			// a normal message indicates an error from the endpoint (e.g. an input parsing error) if it starts with "ERR: "
-			if strings.HasPrefix(string(message), "ERR: ") {
-				logrus.Errorf("Received error message from server: %s", message)
-			} else {
-				logrus.Infof("Received message from server: %s", message)
-			}
-		}
-	}(&c)
+	go c.readLoop(ctx)
 
 	return &c, err
+}
+
+func (wsc *WebSocketClient) readLoop(ctx context.Context) {
+	for {
+		_, message, err := wsc.Connection.Read(ctx)
+		if err != nil {
+			if websocket.CloseStatus(err) == websocket.StatusNormalClosure {
+				logrus.Infof("Received message from server: '%v'", err)
+			} else {
+				wsc.errorCallback(err)
+			}
+			return
+		}
+		// a normal message indicates an error from the endpoint (e.g. an input parsing error) if it starts with "ERR: "
+		if strings.HasPrefix(string(message), "ERR: ") {
+			wsc.errorCallback(fmt.Errorf("%s", message))
+		} else {
+			logrus.Infof("Received message from server: %s", message)
+		}
+	}
 }
 
 // SendGPSPosition will send the GPS position to the server
