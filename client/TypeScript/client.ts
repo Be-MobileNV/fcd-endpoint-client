@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 import { Buffer } from 'buffer';
 
-interface GPSPosition {
+export interface GPSPosition {
   vehicleId: string;
   vehicleType?: number;
   engineState?: number;   // -1, 0, or 1
@@ -9,13 +9,13 @@ interface GPSPosition {
   lon: number;
   lat: number;
   heading?: number;       // degrees
-  hdop?: number;          // meters
+  hacc?: number;          // meters
   speed?: number;         // km/h
   alt?: number;           // meters
   metadata?: Record<string, string>;
 }
 
-interface ClientOptions {
+export interface ClientOptions {
   address: string;
   port: string;
   tls?: boolean;
@@ -24,7 +24,7 @@ interface ClientOptions {
   compression?: boolean;
 }
 
-class FcdWebSocketClient {
+export class FcdWebSocketClient {
   private ws: WebSocket | null = null;
   private readonly url: string;
   private readonly options: ClientOptions;
@@ -113,46 +113,3 @@ class FcdWebSocketClient {
     }
   }
 }
-
-
-// --- Example Usage ---
-async function runClient() {
-  const config: ClientOptions = {
-    address: '127.0.0.1',
-    port: '8080',
-    tls: false,
-    username: '', // Add credentials if needed
-    password: '',
-    compression: true,
-  };
-
-  const client = new FcdWebSocketClient(config);
-
-  try {
-    await client.connect();
-
-    // Send some sample positions
-    for (let i = 0; i < 100; i++) {
-      const position: GPSPosition = {
-        vehicleId: `TS-VEHICLE-${Math.floor(Math.random() * 1000)}`,
-        timestamp: Date.now(),
-        lon: 4.35 + (Math.random() - 0.5) * 0.1,
-        lat: 50.85 + (Math.random() - 0.5) * 0.1,
-        heading: Math.random() * 360,
-        speed: Math.random() * 100,
-      };
-      await client.sendPosition(position);
-      await new Promise(resolve => setTimeout(resolve, 250));
-    }
-
-  } catch (error) {
-    console.error("Client operation failed:", error);
-  } finally {
-    // Close the connection after sending
-    client.close();
-    console.log("Client finished.");
-  }
-}
-
-// Run the example client
-runClient();
