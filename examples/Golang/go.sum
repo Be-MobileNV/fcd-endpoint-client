@@ -1,7 +1,11 @@
-github.com/Be-MobileNV/fcd-endpoint-client/client/Golang v0.0.0-20250117092858-069191ab571d h1:M6JH61j8maycliBjih82iw3oka0mjPsG7QKQEY08kaM=
-github.com/Be-MobileNV/fcd-endpoint-client/client/Golang v0.0.0-20250117092858-069191ab571d/go.mod h1:OuVTI1N6zYrIaLjXWiLbsXLmH7nwsqK92wa3nhBQXh0=
 github.com/BurntSushi/toml v0.4.1 h1:GaI7EiDXDRfa8VshkTj7Fym7ha+y8/XxIgD2okUIjLw=
 github.com/BurntSushi/toml v0.4.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
+github.com/TomAlard/fcd-endpoint-client/client/Golang v0.0.0-20250422093010-1ba02894ddbc h1:xdu9sxzWGLbgEI5A2qqnOpWfz882+tJcGMolU+GoipU=
+github.com/TomAlard/fcd-endpoint-client/client/Golang v0.0.0-20250422093010-1ba02894ddbc/go.mod h1:oxlZzF57jEKbz+vMqWR1mMA/1pfJwxyuC855P8QAuCY=
+github.com/TomAlard/fcd-endpoint-client/client/Golang v0.0.0-20250512093645-a5133192c2a9 h1:FbKmEOFz37409FqYc2NBqP0SfrGzg3c5kFJjM7XfH0U=
+github.com/TomAlard/fcd-endpoint-client/client/Golang v0.0.0-20250512093645-a5133192c2a9/go.mod h1:bmD8yMRFwZDbl5DC55K0Y77kIHbh5oplgHqRhyrUFOY=
+github.com/coder/websocket v1.8.13 h1:f3QZdXy7uGVz+4uCJy2nTZyM0yTBj8yANEHhqlXZ9FE=
+github.com/coder/websocket v1.8.13/go.mod h1:LNVeNrXQZfe5qhS9ALED3uA+l5pPqvwXg3CKoDBB2gs=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -9,8 +13,6 @@ github.com/fatih/camelcase v1.0.0 h1:hxNvNX/xYBp0ovncs8WyWZrOrpBNub/JfaMvbURyft8
 github.com/fatih/camelcase v1.0.0/go.mod h1:yN2Sb0lFhZJUdVvtELVWefmrXpuZESvPmqwoZc+/fpc=
 github.com/fatih/structs v1.1.0 h1:Q7juDM0QtcnhCpeyLGQKyg4TOIghuNXrkL32pHAUMxo=
 github.com/fatih/structs v1.1.0/go.mod h1:9NiDSp5zOcgEDl+j00MP/WkGVPOlPRLejGD8Ga6PJ7M=
-github.com/gorilla/websocket v1.4.2 h1:+/TMaTYc4QFitKJxsQ7Yye35DkWvkdLcvGKqM+x0Ufc=
-github.com/gorilla/websocket v1.4.2/go.mod h1:YR8l580nyteQvAITg2hZ9XVh4b55+EU/adAjf1fMHhE=
 github.com/koding/multiconfig v0.0.0-20171124222453-69c27309b2d7 h1:SWlt7BoQNASbhTUD0Oy5yysI2seJ7vWuGUp///OM4TM=
 github.com/koding/multiconfig v0.0.0-20171124222453-69c27309b2d7/go.mod h1:Y2SaZf2Rzd0pXkLVhLlCiAXFCLSXAIbTKDivVgff/AM=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
